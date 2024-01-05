@@ -9,6 +9,6 @@ RUN mkdir -p /var/www/html
 
 ADD ../../ /var/www/html
 
-RUN docker-php-ext-install pdo
+RUN docker-php-ext-install pdo opcache
 
 RUN chown -R laravel:laravel /var/www/html

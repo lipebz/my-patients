@@ -3,6 +3,7 @@ version: "3.9"
 networks:
     laravel:
         name: laravel
+        driver: bridge
 
 services:
 
@@ -43,36 +44,5 @@ services:
             POSTGRES_PASSWORD: secret_password
         volumes:
             - ./.pg-data:/var/lib/postgresql/data
-        networks:
-            - laravel
-
-    composer:
-        image: composer:latest
-        container_name: composer
-        volumes:
-            - ./:/var/www/html
-        working_dir: /var/www/html
-        networks:
-            - laravel
-
-    artisan:
-        build:
-            context: ./.docker-env/php
-            dockerfile: php.dockerfile
-        container_name: artisan
-        volumes:
-            - ./:/var/www/html
-        working_dir: /var/www/html
-        entrypoint: ['php', 'artisan']
-        networks:
-            - laravel
-
-    npm:
-        image: node:current-alpine
-        container_name: npm
-        volumes:
-            - ./:/var/www/html
-        working_dir: /var/www/html
-        entrypoint: ['npm']
         networks:
             - laravel
