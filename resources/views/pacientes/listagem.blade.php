@@ -7,6 +7,7 @@
         <title>Laravel</title>
 
         @vite(['resources/css/app.css','resources/js/app.js'])
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
         <!-- Fonts -->
@@ -16,6 +17,7 @@
         
     </head>
     <body class="antialiased">
+        <input type="hidden" value="{{route('pacientes.detalhes', 2)}}" id="route-detalhes">
         <div class="relative sm:flex sm:justify-center sm:items-start py-14 min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
                         
 
@@ -41,34 +43,53 @@
                   </div>
                   <input type="text" id="input-group-1" class="outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="">
                 </div>
-                <p class="my-3">1 registro encontrado.</p>
-                <div class="flow-root ">
-                    <ul role="list" class="divide-y rounded-lg overflow-hidden divide-gray-200 dark:divide-gray-700">
-                        <li class=" hover:bg-gray-100 ">
-                            <a class="py-3 sm:py-4 inline-block w-full" href="{{route('pacientes.detalhes', 2)}}">
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0 ms-2">
-                                        <img class="w-8 h-8 rounded-full" src="https://thispersondoesnotexist.com?2" alt="Neil image">
-                                    </div>
-                                    <div class="flex-1 min-w-0 ms-4">
-                                        <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                            Filipe Bezerra
-                                        </p>
-                                        <p class="text-gray-500 truncate dark:text-gray-400" style="font-size: 13px">
-                                            23 anos - Itaquaquecetuba, SP
-                                        </p>
-                                    </div>
-                                    <div class="inline-flex justify-center items-end flex-col text-sm font-semibold text-gray-900 dark:text-white">
-                                        
-                                        <div>
-                                            <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">CPF 393.521.388.30</span>
-                                            <span class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">CNS 8015457815-7038</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
+                <div class="container-body-results hidden">
+                    <p class="my-3"><span class="count-pacientes">0</span> registro encontrado.</p>
+                    <div class="flow-root ">
+                        <ul role="list" id="container-listagem" class="divide-y rounded-lg overflow-hidden divide-gray-200 dark:divide-gray-700"></ul>
+                    </div>
+                </div>
+                <div class="container-body-results-loading">
+                    
+                    <div role="status" class="w-100 p-4 space-y-4 border border-gray-200 divide-y divide-gray-200 rounded shadow animate-pulse dark:divide-gray-700 md:p-6 dark:border-gray-700">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                            </div>
+                            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+                        </div>
+                        <div class="flex items-center justify-between pt-4">
+                            <div>
+                                <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                            </div>
+                            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+                        </div>
+                        <div class="flex items-center justify-between pt-4">
+                            <div>
+                                <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                            </div>
+                            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+                        </div>
+                        <div class="flex items-center justify-between pt-4">
+                            <div>
+                                <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                            </div>
+                            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+                        </div>
+                        <div class="flex items-center justify-between pt-4">
+                            <div>
+                                <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                                <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                            </div>
+                            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+                        </div>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+
                 </div>
                 <nav class="mt-8 flex hidden justify-center items-center" aria-label="Page navigation example">
                     <ul class="flex items-center -space-x-px h-8 text-sm">
@@ -118,5 +139,8 @@
                 </nav>
             </div>
         </div>
+
+        @vite(['resources/js/pacientes/listagem.js'])
+        
     </body>
 </html>
