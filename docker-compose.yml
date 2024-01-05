@@ -1,0 +1,78 @@
+version: "3.9"
+
+networks:
+    laravel:
+        name: laravel
+
+services:
+
+    nginx:
+        build:
+            context: ./.docker-env/nginx
+            dockerfile: nginx.dockerfile
+        depends_on:
+            - php
+            # - mysql
+        container_name: nginx
+        ports:
+            - 80:80
+            - 443:443
+        volumes:
+            - ./:/var/www/html
+        networks:
+            - laravel
+
+    php:
+        build:
+            context: ./.docker-env/php
+            dockerfile: php.dockerfile
+        container_name: php
+        volumes:
+            - ./:/var/www/html
+        networks:
+            - laravel
+
+    postgres:
+        image: postgres:latest
+        container_name: postgres
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_DB: laravel_db
+            POSTGRES_USER: laravel_user
+            POSTGRES_PASSWORD: secret_password
+        volumes:
+            - ./.pg-data:/var/lib/postgresql/data
+        networks:
+            - laravel
+
+    composer:
+        image: composer:latest
+        container_name: composer
+        volumes:
+            - ./:/var/www/html
+        working_dir: /var/www/html
+        networks:
+            - laravel
+
+    artisan:
+        build:
+            context: ./.docker-env/php
+            dockerfile: php.dockerfile
+        container_name: artisan
+        volumes:
+            - ./:/var/www/html
+        working_dir: /var/www/html
+        entrypoint: ['php', 'artisan']
+        networks:
+            - laravel
+
+    npm:
+        image: node:current-alpine
+        container_name: npm
+        volumes:
+            - ./:/var/www/html
+        working_dir: /var/www/html
+        entrypoint: ['npm']
+        networks:
+            - laravel
