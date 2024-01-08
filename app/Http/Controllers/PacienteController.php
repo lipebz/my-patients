@@ -12,12 +12,16 @@ class PacienteController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+
+        $search = $request->query('search');
+
+        $search = str_replace('+', '%', $search);
 
         try {
 
-            $pacientes = Paciente::with('endereco')->get();
+            $pacientes = Paciente::with('endereco')->where('nome', 'ilike', "%$search%")->paginate(5);
 
             // Tratamentos
 
@@ -38,7 +42,7 @@ class PacienteController extends Controller
     
             return response()->json([
                 "success"=> true,
-                "data"=> $pacientes
+                "data" => $pacientes
             ]);
 
         } catch (\Throwable $th) {
