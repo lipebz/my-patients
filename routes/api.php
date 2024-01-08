@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiCepService;
 use App\Http\Controllers\PacienteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,3 +21,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('pacientes', [PacienteController::class, 'index']);
+Route::post('pacientes', [PacienteController::class, 'store']);
+
+Route::get('cep/{cep}', [ApiCepService::class, 'search']);

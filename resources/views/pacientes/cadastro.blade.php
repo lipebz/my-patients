@@ -9,14 +9,12 @@
         @vite(['resources/css/app.css','resources/js/app.js'])
         @vite('resources/js/datepicker.js')
 
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script> --}}
-
-        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/datepicker.min.js"></script> --}}
-
         
     </head>
     <body class="antialiased">
@@ -38,7 +36,7 @@
                 
 
                                 
-                <form>
+                <form id="form-cadastro">
 
 
                     <div class="text-center my-9 ">
@@ -53,7 +51,7 @@
                                     <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Clique </span> ou arraste e solte.</p>
                                     <p class="text-sm text-gray-500 dark:text-gray-400">PNG ou JPG</p>
                                 </div>
-                                <input id="input_foto" name="input_foto" type="file" class="hidden" required />
+                                <input id="input_foto" name="input_foto" type="file" class="hidden" />
                             </label>
                         </div> 
                         <div class="relative mx-auto w-44 h-44 hidden">
@@ -71,11 +69,11 @@
                             <input type="text" id="nome" name="nome" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" required>
                         </div>
                         <div class="col-span-3">
-                            <label for="mae_nome" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nome da Mãe</label>
-                            <input type="text" id="mae_nome" name="mae_nome" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" required>
+                            <label for="mae" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nome da Mãe</label>
+                            <input type="text" id="mae" name="mae" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" required>
                         </div>
                         <div class="col-span-2">
-                            <label for="dtnasc" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Data de Nascimento</label>
+                            <label for="data_nascimento" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Data de Nascimento</label>
                             
                             <div class="relative max-w-sm">
                                 <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
@@ -83,17 +81,17 @@
                                     <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
                                 </svg>
                                 </div>
-                                <input datepicker required type="text" id="dtnasc" name="dtnasc" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Selecione a data">
+                                <input datepicker required type="text" id="data_nascimento" name="data_nascimento" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Selecione a data">
                             </div>
   
                         </div>  
                         <div class="col-span-2">
                             <label for="cpf" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">CPF</label>
-                            <input type="tel" id="cpf" name="cpf" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="123.456.789-00" required>
+                            <input type="text" id="cpf" name="cpf" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="123.456.789-00" required>
                         </div>
                         <div class="col-span-2">
                             <label for="cns" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">CNS</label>
-                            <input type="url" id="cns" name="cns" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="00001111222-3333" required>
+                            <input type="text" id="cns" name="cns" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="00001111222-3333" required>
                         </div>
                         
                     </div>
@@ -115,7 +113,7 @@
                         </div>
                         <div class="col-span-1">
                             <label for="uf" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">UF</label>
-                            <select id="uf" name="uf" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <select id="uf" name="uf" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected></option>
                                 <option value="">Selecione</option>
                                 <option value="AC">AC</option>
@@ -170,5 +168,8 @@
                 
             </div>
         </div>
+
+        @vite(['resources/js/pacientes/cadastro.js'])
+
     </body>
 </html>
