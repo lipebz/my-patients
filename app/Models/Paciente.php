@@ -17,6 +17,7 @@ class Paciente extends Model
         "cpf",
         "cns",
         "mae",
+        "foto_url",
     ];
 
     public function endereco(): HasOne

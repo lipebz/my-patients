@@ -6,6 +6,7 @@ use App\Models\Paciente;
 use Carbon\Carbon;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PacienteController extends Controller
 {
@@ -21,7 +22,10 @@ class PacienteController extends Controller
 
         try {
 
-            $pacientes = Paciente::with('endereco')->where('nome', 'ilike', "%$search%")->paginate(5);
+            $pacientes = Paciente::with('endereco')
+                            ->where('nome', 'ilike', "%$search%")
+                            ->orderBy('nome')
+                            ->paginate(5);
 
             // Tratamentos
 
@@ -32,6 +36,13 @@ class PacienteController extends Controller
                 $paciente['cpf_formatado'] = $this->mask($paciente->cpf, '###.###.###-##');
 
                 $paciente['cns_formatado'] = $this->mask($paciente->cns, '###.####.####-####');
+
+
+                if (empty($paciente['foto_url']))
+                    $paciente['foto_url'] = 'https://www.promoview.com.br/uploads/images/unnamed%2819%29.png';
+
+                else if (str_starts_with($paciente['foto_url'], 'public'))
+                    $paciente['foto_url'] = str_replace('public', '/storage', $paciente->foto_url);
 
 
 
@@ -74,7 +85,41 @@ class PacienteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        try {
+
+
+            $path = Storage::putFileAs(
+                'public/profiles', $request->file('input-foto'), random_int(1,100) . '.png'
+            );
+
+            $request->request->add(['foto_url' => $path]);
+
+            $paciente = Paciente::create($request->all());
+
+            $paciente->endereco()->create($request->all());
+
+
+            return response()->json([
+                "success"=> true,
+                "message"=> "Cadastrado com sucesso!"
+            ]);
+
+        } catch (\Throwable $th) {
+
+            $errorSQL = $th->getMessage();
+
+            if ($th->errorInfo[0] == 23505)
+                $errorSQL = 'Já existe um cadastro com esse CPF/CNS';
+
+            return response()->json([
+                "success"=> false,
+                "message"=> $errorSQL
+            ]);
+        }
+
+        
+
     }
 
     /**

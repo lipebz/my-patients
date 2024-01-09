@@ -12,6 +12,7 @@ class PacienteEndereco extends Model
 
     protected $table = "pacientes_enderecos";
     protected $fillable = [
+        "cep",
         "logradouro",
         "numero",
         "complemento",

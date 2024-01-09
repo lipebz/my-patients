@@ -12,6 +12,8 @@ class ApiCepService extends Controller
     public function search(string $cep)
     {
 
+        $cep = preg_replace( '/[^0-9]/', '', $cep);
+
         $data = Redis::get("cep_{$cep}");
 
         if (!$data) {

@@ -23,7 +23,7 @@ const getPacientes = async (page = 1) => {
         return Swal.fire({
             icon: 'error',
             title: 'Ops!',
-            text: response.message,
+            text: request.message,
             timer: 3000,
             showConfirmButton: false,
             timerProgressBar: true,
