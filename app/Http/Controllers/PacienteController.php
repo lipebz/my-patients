@@ -85,12 +85,18 @@ class PacienteController extends Controller
      */
     public function store(Request $request)
     {
+
+        if (empty($request->file('input-foto')))
+            return response()->json([
+                "success"=> false,
+                "message"=> 'É necessário anexar a foto'
+            ]);
         
         try {
 
 
-            $path = Storage::putFileAs(
-                'public/profiles', $request->file('input-foto'), random_int(1,100) . '.png'
+            $path = Storage::put(
+                'public/profiles', $request->file('input-foto')
             );
 
             $request->request->add(['foto_url' => $path]);
@@ -109,8 +115,9 @@ class PacienteController extends Controller
 
             $errorSQL = $th->getMessage();
 
-            if ($th->errorInfo[0] == 23505)
+            if (!empty($th->errorInfo) && $th->errorInfo[0] == 23505)
                 $errorSQL = 'Já existe um cadastro com esse CPF/CNS';
+
 
             return response()->json([
                 "success"=> false,
