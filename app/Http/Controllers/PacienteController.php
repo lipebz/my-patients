@@ -35,15 +35,10 @@ class PacienteController extends Controller
 
                 $paciente['cpf_formatado'] = $this->mask($paciente->cpf, '###.###.###-##');
 
-                $paciente['cns_formatado'] = $this->mask($paciente->cns, '###.####.####-####');
+                $paciente['cns_formatado'] = $this->mask($paciente->cns, '### #### #### ####');
 
 
-                if (empty($paciente['foto_url']))
-                    $paciente['foto_url'] = 'https://www.promoview.com.br/uploads/images/unnamed%2819%29.png';
-
-                else if (str_starts_with($paciente['foto_url'], 'public'))
-                    $paciente['foto_url'] = str_replace('public', '/storage', $paciente->foto_url);
-
+                $paciente['foto_url'] = $this->getFoto($paciente['foto_url']);
 
 
                 $pacientes[$key] = $paciente;
@@ -64,6 +59,19 @@ class PacienteController extends Controller
             ]);
             
         }
+
+    }
+
+    private function getFoto($foto_url)
+    {
+
+        if (empty($foto_url))
+            $foto_url = 'https://www.promoview.com.br/uploads/images/unnamed%2819%29.png';
+
+        else if (str_starts_with($foto_url, 'public'))
+            $foto_url = str_replace('public', '/storage', $foto_url);
+
+        return $foto_url;
 
     }
 
@@ -91,6 +99,12 @@ class PacienteController extends Controller
                 "success"=> false,
                 "message"=> 'É necessário anexar a foto'
             ]);
+
+
+        $request['cep'] = preg_replace( '/[^0-9]/', '', $request['cep']);
+        $request['cpf'] = preg_replace( '/[^0-9]/', '', $request['cpf']);
+        $request['cns'] = preg_replace( '/[^0-9]/', '', $request['cns']);
+        $request['data_nascimento'] = Carbon::createFromFormat('d/m/Y', $request['data_nascimento'])->format('Y-m-d');
         
         try {
 
@@ -134,7 +148,28 @@ class PacienteController extends Controller
      */
     public function show(Paciente $paciente)
     {
-        //
+
+
+        $paciente['idade'] = Carbon::createFromDate($paciente->data_nascimento)->diff(Carbon::now())->format('%y');
+
+        $paciente['data_nascimento_formatada'] = date('d/m/Y', strtotime($paciente->data_nascimento));
+
+        $paciente['cpf_formatado'] = $this->mask($paciente->cpf, '###.###.###-##');
+
+        $paciente['cns_formatado'] = $this->mask($paciente->cns, '### #### #### ####');
+
+        $paciente['endereco_formatado'] = $paciente->endereco->logradouro . ', ' . $paciente->endereco->numero . $paciente->endereco->complemento . ' - ' . $paciente->endereco->cidade . ', ' . $paciente->endereco->uf;
+
+        $paciente['foto_url'] = $this->getFoto($paciente['foto_url']);
+
+
+
+
+
+        return response()->json([
+            "success"=> true,
+            "data"=> $paciente
+        ]);
     }
 
     /**

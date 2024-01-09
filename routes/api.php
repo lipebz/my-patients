@@ -22,6 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('pacientes', [PacienteController::class, 'index']);
+Route::get('pacientes/{paciente}', [PacienteController::class, 'show']);
 Route::post('pacientes', [PacienteController::class, 'store']);
 
 Route::get('cep/{cep}', [ApiCepService::class, 'search']);

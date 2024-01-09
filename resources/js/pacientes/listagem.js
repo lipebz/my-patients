@@ -49,7 +49,7 @@ const renderPacientes = res => {
 
         const html = `
             <li class="hover:bg-gray-100 ">
-                <a class="py-3 sm:py-4 inline-block w-full" href="${$('#route-detalhes').val()}">
+                <a class="py-3 sm:py-4 inline-block w-full" href="/pacientes/${value.id}">
                     <div class="flex items-center">
                         <div class="flex-shrink-0 ms-2">
                             <img class="w-8 h-8 rounded-full" src="${value.foto_url ?? 'https://thispersondoesnotexist.com'}" alt="Neil image">
