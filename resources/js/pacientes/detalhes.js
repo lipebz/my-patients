@@ -32,8 +32,6 @@ const getInfo = async () => {
 
 const renderInfo = data => {
 
-    console.log(data);
-
     $('#nome').text(data.nome)
     $('#idade').text(data.idade)
     $('#data_nascimento').text(`(${data.data_nascimento_formatada})`)

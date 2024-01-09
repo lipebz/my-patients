@@ -9,38 +9,67 @@
         @vite(['resources/css/app.css','resources/js/app.js'])
         @vite('resources/js/datepicker.js')
 
+        <script src="https://unpkg.com/imask"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script> --}}
-
-        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/datepicker.min.js"></script> --}}
-
         
     </head>
     <body class="antialiased">
+        <input type="hidden" id="id" value="{{ $id }}">
         <div class="relative sm:flex sm:justify-center sm:items-start py-14 min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
                         
 
             <div class="w-full max-w-screen-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
                 <div class="flex items-center justify-between mb-10">
                     <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">Editar informações do Paciente <span class=" font-normal text-gray-400">#{{$id}}</span></h5>
-                    <a href="{{route('pacientes.listagem')}}" class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
-                        Meus Pacientes
-                    </a>
+                    <div class="flex gap-6">
+                        <a href="{{route('pacientes.listagem')}}" class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
+                            Meus Pacientes
+                        </a>
+                        <a href="{{route('pacientes.importar-csv')}}" class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
+                            Importar .CSV
+                        </a>
+                    </div>
                 </div>
                 
 
+
+                <div role="status" id="container-loading-informacoes" class="w-100 mb-10 p-4 border border-gray-200 rounded shadow animate-pulse md:p-6 dark:border-gray-700">
+                    <div class="flex items-center mt-4 mb-3">
+                        <svg class="w-52 h-52 me-3 text-gray-200 dark:text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                             <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"/>
+                         </svg>
+                         <div class="w-full">
+                            <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-100 mb-2"></div>
+                            <div class="w-48 h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2"></div>
+                            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2"></div>
+                            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                         </div>
+                     </div>
+                    <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
+                    <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                    <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                    <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                    
+                    <span class="sr-only">Loading...</span>
+                </div>
                                 
-                <form>
+                <form id="form-edicao" class="hidden">
+                    <input type="hidden" name="_method" value="PUT">
+                    
 
-
-                    <div class="text-center my-9 ">
+                    <div class="text-center my-9">
                         <label class="inline-block mb-2 text-sm font-medium text-gray-900 dark:text-white">Foto de Perfil</label>
 
-                        <div class="flex items-center justify-center rounded-full mx-auto w-44 h-44">
-                            <label for="input_foto" class="flex flex-col items-center justify-center rounded-full w-full h-44 border-2 border-gray-300 border-dashed cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                        <div class="hidden container-upload-input flex items-center justify-center rounded-full mx-auto w-44 h-44">
+                            <label for="input-foto" class="flex flex-col items-center justify-center rounded-full w-full h-44 border-2 border-gray-300 border-dashed cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                                 <div class="flex flex-col items-center justify-center pt-5 pb-6">
                                     <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
@@ -48,12 +77,12 @@
                                     <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Clique </span> ou arraste e solte.</p>
                                     <p class="text-sm text-gray-500 dark:text-gray-400">PNG ou JPG</p>
                                 </div>
-                                <input id="input_foto" name="input_foto" type="file" class="hidden" required />
+                                <input id="input-foto" name="input-foto" type="file" class="hidden" />
                             </label>
                         </div> 
-                        <div class="relative mx-auto w-44 h-44 hidden">
-                            <img class=" rounded-full w-44 h-44" src="https://thispersondoesnotexist.com" alt="image description">
-                            <label for="input_foto" class="overlay absolute w-44 h-44 rounded-full bg-slate-600 cursor-pointer opacity-0 hover:opacity-80 active:opacity-90 select-none text-white
+                        <div class="container-upload-preview relative mx-auto w-44 h-44">
+                            <img class=" rounded-full w-44 h-44" id="img-foto" src="" alt="image description">
+                            <label for="input-foto" class="overlay absolute w-44 h-44 rounded-full bg-slate-600 cursor-pointer opacity-0 hover:opacity-80 active:opacity-90 select-none text-white
                              flex justify-center items-center inset-y-0">Alterar</label>
                         </div>
                     </div>
@@ -66,11 +95,11 @@
                             <input type="text" id="nome" name="nome" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" required>
                         </div>
                         <div class="col-span-3">
-                            <label for="mae_nome" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nome da Mãe</label>
-                            <input type="text" id="mae_nome" name="mae_nome" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" required>
+                            <label for="mae" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nome da Mãe</label>
+                            <input type="text" id="mae" name="mae" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" required>
                         </div>
                         <div class="col-span-2">
-                            <label for="dtnasc" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Data de Nascimento</label>
+                            <label for="data_nascimento" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Data de Nascimento</label>
                             
                             <div class="relative max-w-sm">
                                 <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
@@ -78,17 +107,19 @@
                                     <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
                                 </svg>
                                 </div>
-                                <input datepicker required type="text" id="dtnasc" name="dtnasc" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Selecione a data">
+                                <input datepicker required type="text" id="data_nascimento" name="data_nascimento" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Selecione a data">
                             </div>
   
                         </div>  
                         <div class="col-span-2">
                             <label for="cpf" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">CPF</label>
-                            <input type="tel" id="cpf" name="cpf" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="123.456.789-00" required>
+                            <input type="text" id="cpf" name="cpf" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="123.456.789-00" required>
                         </div>
                         <div class="col-span-2">
                             <label for="cns" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">CNS</label>
-                            <input type="url" id="cns" name="cns" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="00001111222-3333" required>
+                            <input type="text" id="cns" name="cns" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="000 1111 2222 3333" required>
+                            <p id="invalid-cns" class="hidden mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Inválido!</span> Tente: 986009471243208</p>
+
                         </div>
                         
                     </div>
@@ -110,7 +141,7 @@
                         </div>
                         <div class="col-span-1">
                             <label for="uf" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">UF</label>
-                            <select id="uf" name="uf" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <select id="uf" name="uf" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected></option>
                                 <option value="">Selecione</option>
                                 <option value="AC">AC</option>
@@ -161,8 +192,12 @@
                     <button type="submit" class="text-white mt-6 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Salvar alterações</button>
                 </form>
 
+
                 
             </div>
         </div>
+
+        @vite(['resources/js/pacientes/edicao.js'])
+
     </body>
 </html>

@@ -177,7 +177,55 @@ class PacienteController extends Controller
      */
     public function update(Request $request, Paciente $paciente)
     {
-        //
+ 
+        $request['cep'] = preg_replace( '/[^0-9]/', '', $request['cep']);
+        $request['cpf'] = preg_replace( '/[^0-9]/', '', $request['cpf']);
+        $request['cns'] = preg_replace( '/[^0-9]/', '', $request['cns']);
+        $request['data_nascimento'] = Carbon::createFromFormat('d/m/Y', $request['data_nascimento'])->format('Y-m-d');
+        
+        try {
+
+            if (!empty($request->file('input-foto'))) {
+
+                $path = Storage::put(
+                    'public/profiles', $request->file('input-foto')
+                );
+
+                $request->request->add(['foto_url' => $path]);
+
+            }
+
+            $paciente->update($request->except('_method'));
+
+            $paciente->endereco()->update($request->only([
+                'cep',
+                'logradouro',
+                'numero',
+                'complemento',
+                'bairro',
+                'cidade',
+                'uf'
+            ]));
+
+
+            return response()->json([
+                "success"=> true,
+                "message"=> "Atualziado com sucesso!"
+            ]);
+
+        } catch (\Throwable $th) {
+
+            $errorSQL = $th->getMessage();
+
+            if (!empty($th->errorInfo) && $th->errorInfo[0] == 23505)
+                $errorSQL = 'Já existe um cadastro com esse CPF/CNS';
+
+
+            return response()->json([
+                "success"=> false,
+                "message"=> $errorSQL
+            ]);
+        }
     }
 
     /**
