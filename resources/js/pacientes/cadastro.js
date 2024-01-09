@@ -157,3 +157,21 @@ $('#cep').on('keyup', function(e) {
  
 })
 
+$('#cns').blur(async function () {
+
+    const url = `/api/validar/cns/${this.value}`
+
+    const request = await $.get(url);
+
+    const { isValid } = request
+
+    if (!isValid) {
+        $('#cns').val('')
+        $('#invalid-cns').removeClass('hidden')
+    }
+    else {
+        $('#invalid-cns').addClass('hidden')
+    }
+    
+
+})

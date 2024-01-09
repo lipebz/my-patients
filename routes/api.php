@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiCepService;
+use App\Http\Controllers\CNSValidator;
 use App\Http\Controllers\PacienteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,3 +25,4 @@ Route::get('pacientes', [PacienteController::class, 'index']);
 Route::post('pacientes', [PacienteController::class, 'store']);
 
 Route::get('cep/{cep}', [ApiCepService::class, 'search']);
+Route::get('validar/cns/{value}', [CNSValidator::class, 'validateCns']);
