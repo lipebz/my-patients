@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Importacao;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ImportacaoController extends Controller
 {
@@ -50,7 +51,30 @@ class ImportacaoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        try {
+
+            $path = Storage::put(
+                'public/imports', $request->file('input-csv')
+            );
+            
+            Importacao::create([
+                'tabela' => 'pacientes',
+                'path' => $path
+            ]);
+
+            return response()->json([
+                "success"=> true,
+                "message"=> "Cadastrado com sucesso!"
+            ]);
+
+        } catch (\Throwable $th) {
+
+            return response()->json([
+                "success"=> false,
+                "message"=> $th->getMessage()
+            ]);
+        }
     }
 
     /**

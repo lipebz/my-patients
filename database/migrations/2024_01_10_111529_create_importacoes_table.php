@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('importacoes', function (Blueprint $table) {
             $table->id();
-            $table->integer('quantidade');
+            $table->integer('quantidade')->nullable();
             $table->string('tabela');
-            $table->json('data');
+            $table->json('data')->nullable();
             $table->enum('status', [
                 'Em processamento',
                 'Aguardando validação',
                 'Finalizado',
                 'Cancelado',
-            ]);
+            ])->default('Em processamento');
             $table->dateTime('finish_at')->nullable();
             $table->dateTime('proccess_at')->nullable();
             $table->timestamps();

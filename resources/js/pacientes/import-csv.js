@@ -66,7 +66,7 @@ const renderImportacoes = data => {
                     ${value.tempo}
                 </td>
                 <td class="px-6 py-4">
-                    ${value.quantidade}
+                    ${value.quantidade ?? '-'}
                 </td>
                 <td class="px-6 py-4">
                     ${status}
@@ -106,3 +106,65 @@ const abrirModalValidacao = function() {
 }
 
 $(document).on('click', '.btn-abrir-modal-validacao', abrirModalValidacao)
+
+
+// Importação
+
+const importarCSV = async function() {
+
+    const confirm = await Swal.fire({
+        icon: 'warning',
+        title: "Tem certeza que deseja continuar?",
+        showCancelButton: true,
+        confirmButtonText: "Sim",
+        cancelButtonText: "Cancelar",
+    })
+
+    if (!confirm.isConfirmed)
+        return $(this).val('')
+    
+    Swal.fire({
+        title: "Aguarde...",
+        html: "Seu arquivo está sendo processado",
+        
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    })
+
+
+    const form = $('#form-importar')[0]
+
+    const data = new FormData(form)
+
+    const url = '/api/importacoes'
+
+    const request = await $.ajax({
+        url,
+        data,
+        type : 'POST',
+        processData: false,
+        contentType: false,
+    });
+
+    if (!request?.success) {
+        return Swal.fire({
+            icon: 'error',
+            title: 'Ops!',
+            text: request.message,
+        })
+    }
+
+    await Swal.fire({
+        icon: 'success',
+        title: 'Importado com sucesso!',
+        timer: 1500,
+        showConfirmButton: false,
+        timerProgressBar: true,
+    })
+
+    window.location.reload()
+
+}
+
+$('#input-csv').change(importarCSV)

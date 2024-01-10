@@ -15,6 +15,7 @@ class Importacao extends Model
         "tabela",
         "data",
         "status",
+        "path",
         "finish_at",
         "proccess_at",
     ];
