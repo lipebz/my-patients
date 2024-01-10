@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ApiCepService;
 use App\Http\Controllers\CNSValidator;
+use App\Http\Controllers\ImportacaoController;
 use App\Http\Controllers\PacienteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,8 @@ Route::get('pacientes', [PacienteController::class, 'index']);
 Route::get('pacientes/{paciente}', [PacienteController::class, 'show']);
 Route::post('pacientes', [PacienteController::class, 'store']);
 Route::put('pacientes/{paciente}', [PacienteController::class, 'update']);
+
+Route::get('importacoes', [ImportacaoController::class, 'index']);
 
 Route::get('cep/{cep}', [ApiCepService::class, 'search']);
 Route::get('validar/cns/{value}', [CNSValidator::class, 'validateCns']);

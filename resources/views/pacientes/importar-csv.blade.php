@@ -7,6 +7,7 @@
         <title>Laravel</title>
 
         @vite(['resources/css/app.css','resources/js/app.js'])
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
         <!-- Fonts -->
@@ -36,8 +37,49 @@
                     <p class="my-3 text-gray-400 text-sm"></p>
                 </div>
 
-                <div class="relative overflow-x-auto border sm:rounded-lg">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                
+                <div role="status" class="container-loading w-100 p-4 space-y-4 border border-gray-200 divide-y divide-gray-200 rounded shadow animate-pulse dark:divide-gray-700 md:p-6 dark:border-gray-700">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                            <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                        </div>
+                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+                    </div>
+                    <div class="flex items-center justify-between pt-4">
+                        <div>
+                            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                            <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                        </div>
+                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+                    </div>
+                    <div class="flex items-center justify-between pt-4">
+                        <div>
+                            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                            <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                        </div>
+                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+                    </div>
+                    <div class="flex items-center justify-between pt-4">
+                        <div>
+                            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                            <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                        </div>
+                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+                    </div>
+                    <div class="flex items-center justify-between pt-4">
+                        <div>
+                            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                            <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                        </div>
+                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+                    </div>
+                    <span class="sr-only">Loading...</span>
+                </div>
+
+
+                <div class="container-registros hidden relative overflow-x-auto border sm:rounded-lg">
+                    <table id="table-importacoes" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 
@@ -55,95 +97,7 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
-                            
-                            
-                            <tr class="whitespace-nowrap bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="px-6 py-4">
-                                    3 minutos atrás
-                                </td>
-                                <td class="px-6 py-4">
-                                    120
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">Em processamento</span>
-                                </td>
-                                <td class="px-6 py-4 text-end">
-                                    <button type="button" class="text-gray-900 bg-gray-100 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 me-2">
-                                        <i class="fa-solid fa-download"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="whitespace-nowrap bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="px-6 py-4">
-                                    12/02/2001 10:12:03
-                                </td>
-                                <td class="px-6 py-4">
-                                    120
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">Aguardando validação</span>
-                                </td>
-                                <td class="px-6 py-4 text-end">
-                                    <button type="button" data-modal-target="extralarge-modal" data-modal-toggle="extralarge-modal" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 me-2">
-                                        <i class="fa-solid fa-file-import"></i>
-                                    </button>
-
-                                    <button type="button" class="text-gray-900 bg-gray-100 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 me-2">
-                                        <i class="fa-solid fa-download"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="whitespace-nowrap bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="px-6 py-4">
-                                    12/02/2001 10:12:03
-                                </td>
-                                <td class="px-6 py-4">
-                                    120
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">Finalizado</span>
-                                </td>
-                                <td class="px-6 py-4 text-end">
-                                    <button type="button" class="text-gray-900 bg-gray-100 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 me-2">
-                                        <i class="fa-solid fa-download"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="whitespace-nowrap bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="px-6 py-4">
-                                    12/02/2001 10:12:03
-                                </td>
-                                <td class="px-6 py-4">
-                                    120
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">Finalizado</span>
-                                </td>
-                                <td class="px-6 py-4 text-end">
-                                    <button type="button" class="text-gray-900 bg-gray-100 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 me-2">
-                                        <i class="fa-solid fa-download"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="whitespace-nowrap bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="px-6 py-4">
-                                    12/02/2001 10:12:03
-                                </td>
-                                <td class="px-6 py-4">
-                                    120
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">Finalizado</span>
-                                </td>
-                                <td class="px-6 py-4 text-end">
-                                    <button type="button" class="text-gray-900 bg-gray-100 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 me-2">
-                                        <i class="fa-solid fa-download"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
@@ -151,6 +105,9 @@
 
         @include('pacientes.modals.importar-arquivo-csv')
         @include('pacientes.modals.validar-arquivo-csv')
+
+        @vite(['resources/js/pacientes/import-csv.js'])
+
 
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
