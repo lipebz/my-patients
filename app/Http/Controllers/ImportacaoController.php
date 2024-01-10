@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ImportCsvJob;
 use App\Models\Importacao;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ class ImportacaoController extends Controller
 
         try{   
 
-            $data = Importacao::all();
+            $data = Importacao::orderBy('id', 'desc')->get();
 
             // Tratamentos
 
@@ -58,10 +59,14 @@ class ImportacaoController extends Controller
                 'public/imports', $request->file('input-csv')
             );
             
-            Importacao::create([
+            $importacao = Importacao::create([
                 'tabela' => 'pacientes',
                 'path' => $path
             ]);
+        
+
+            ImportCsvJob::dispatch($importacao)
+                    ->delay(Carbon::now()->addSeconds(10));
 
             return response()->json([
                 "success"=> true,
@@ -85,19 +90,64 @@ class ImportacaoController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function importarCsv($importacao)
     {
-        //
+
+        $data = $this->csvToArray($importacao->path, ';'); 
+
+        $importacao->update([
+            'quantidade' => count($data),
+            'data' => json_encode($data),
+            'status' => 'Aguardando validação',
+            'proccess_at' => date('Y-m-d H:i:s')
+        ]);
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+    private function csvToArray($filename = '', $delimiter = ';', $limit = null) {
+
+        $filename = storage_path('app/' . $filename);
+
+        if (!file_exists($filename) || !is_readable($filename))
+            return false;
+
+    
+        $header = null;
+        $data = array();
+        if (($handle = fopen($filename, 'r')) !== false)
+        {
+            while (($row = fgetcsv($handle, 1000, $delimiter)) !== false)
+            {
+                if (!$header) {
+                    foreach ($row as $rr => $rro) {
+                        $row[$rr] = strtolower($rro);
+                    }
+                    $header = $row;
+                }
+                else {
+                    foreach ($row as $rr => $rro) {
+                        $row[$rr] = strtoupper($rro);
+                    }
+    
+                    if ($limit === null)
+                        $data[] = array_combine($header, $row);
+    
+                    else {
+                        if (count($data) < $limit) {
+                            $data[] = array_combine($header, $row);
+                        }
+                        else {
+                            break;
+                        }
+    
+                    }
+                    
+                }
+            }
+            fclose($handle);
+        }
+    
+        return $data;
     }
+
 }
