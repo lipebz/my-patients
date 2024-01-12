@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\ImportCsvJob;
 use App\Models\Importacao;
+use App\Models\Paciente;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -68,8 +69,9 @@ class ImportacaoController extends Controller
             ]);
         
 
+            // $this->importarCsv($importacao);
             ImportCsvJob::dispatch($importacao)
-                    ->delay(Carbon::now()->addSeconds(10));
+                    ->delay(Carbon::now()->addSeconds(5));
 
             return response()->json([
                 "success"=> true,
@@ -132,6 +134,55 @@ class ImportacaoController extends Controller
         }
     }
 
+    public function efetivarImportacao(Request $request, string $id)
+    {
+        
+
+        
+        try {
+            
+            foreach ($request['pacientes'] as $key => $value) {
+
+                // dd($value);
+                
+                $value['cep'] = preg_replace( '/[^0-9]/', '', $value['cep']);
+                $value['cpf'] = preg_replace( '/[^0-9]/', '', $value['cpf']);
+                $value['cns'] = preg_replace( '/[^0-9]/', '', $value['cns']);
+                $value['importacao_id'] = $id;
+    
+                $paciente = Paciente::create($value);
+    
+                $paciente->endereco()->create($value);
+
+
+            }
+            
+            Importacao::find($id)->update([
+                'status' => 'Finalizado',
+                'finish_at' => date('Y-m-d H:i:s')
+            ]);
+            
+
+            return response()->json([
+                "success"=> true,
+                "message"=> "Cadastrado com sucesso!"
+            ]);
+
+        } catch (\Throwable $th) {
+
+            $errorSQL = $th->getMessage();
+
+            if (!empty($th->errorInfo) && $th->errorInfo[0] == 23505)
+                $errorSQL = 'Já existe um cadastro com esse CPF/CNS';
+
+
+            return response()->json([
+                "success"=> false,
+                "message"=> $errorSQL
+            ]);
+        }
+    }
+
     private function mask($val, $mask): string {
         $maskared = '';
         $k = 0;
@@ -152,7 +203,7 @@ class ImportacaoController extends Controller
 
         foreach ($data as $key => $value) {
 
-            $value['data_nascimento'] = Carbon::createFromFormat('d/m/Y', $data['data_nascimento'])->format('Y-m-d');
+            $value['data_nascimento'] = Carbon::createFromFormat('d/m/Y', $value['data_nascimento'])->format('Y-m-d');
 
             $data[$key] = $value;
         }
@@ -188,7 +239,7 @@ class ImportacaoController extends Controller
                 }
                 else {
                     foreach ($row as $rr => $rro) {
-                        $row[$rr] = strtoupper($rro);
+                        $row[$rr] = ($rro);
                     }
     
                     if ($limit === null)

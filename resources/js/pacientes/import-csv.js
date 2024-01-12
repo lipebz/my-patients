@@ -195,7 +195,7 @@ const renderInfoImportacao = (res) => {
 
     (new Modal($('#extralarge-modal')[0])).show();
 
-    const container = $('#table-info-importacao')
+    const container = $('#table-info-importacao tbody')
 
     container.empty()
 
@@ -246,6 +246,8 @@ const renderInfoImportacao = (res) => {
        `) 
     })
 
+    $('#btn-validar').attr('data-id', res.id)
+
     let total = validacoes.length
 
     $('.count-validacao').text(total + ` registro${total != 1 ? 's' : ''} encontrado${total != 1 ? 's' : ''}`)
@@ -267,3 +269,63 @@ const removerValidacao = (e) => {
 
 $(document).on('click', '.btn-abrir-modal-validacao', getInfoImportacao)
 $(document).on('click', '.btn-remover-validacao', removerValidacao)
+
+const validar = async ({ target }) => {
+
+    const id = $(target).data('id')
+
+
+    const form = $('#form-validacao')[0]
+
+    const data = new FormData(form)
+
+    
+    validacoes.forEach((value, key) => {
+        data.append(`pacientes[${key}][nome]`, value.nome)
+        data.append(`pacientes[${key}][data_nascimento]`, value.data_nascimento)
+        data.append(`pacientes[${key}][mae]`, value.mae)
+        data.append(`pacientes[${key}][cpf]`, value.cpf)
+        data.append(`pacientes[${key}][cns]`, value.cns)
+        data.append(`pacientes[${key}][cep]`, value.cep)
+        data.append(`pacientes[${key}][logradouro]`, value.logradouro)
+        data.append(`pacientes[${key}][numero]`, value.numero)
+        data.append(`pacientes[${key}][complemento]`, value.complemento)
+        data.append(`pacientes[${key}][bairro]`, value.bairro)
+        data.append(`pacientes[${key}][cidade]`, value.cidade)
+        data.append(`pacientes[${key}][uf]`, value.uf)
+    })
+
+
+
+    const url = `/api/importacoes/${id}/efetivar-importacao`
+
+    const request = await $.ajax({
+        url,
+        data,
+        type : 'POST',
+        processData: false,
+        contentType: false,
+    });
+
+    if (!request?.success) {
+        return Swal.fire({
+            icon: 'error',
+            title: 'Ops!',
+            text: request.message,
+        })
+    }
+
+    await Swal.fire({
+        icon: 'success',
+        title: 'Cadastrado com sucesso!',
+        timer: 1500,
+        showConfirmButton: false,
+        timerProgressBar: true,
+    })
+
+    window.location.href = '/pacientes'
+
+
+}
+
+$('#btn-validar').click(validar)

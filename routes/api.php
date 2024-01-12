@@ -28,8 +28,9 @@ Route::post('pacientes', [PacienteController::class, 'store']);
 Route::put('pacientes/{paciente}', [PacienteController::class, 'update']);
 
 Route::get('importacoes', [ImportacaoController::class, 'index']);
-Route::get('importacoes/{id}', [ImportacaoController::class, 'show']);
 Route::post('importacoes', [ImportacaoController::class, 'store']);
+Route::get('importacoes/{id}', [ImportacaoController::class, 'show']);
+Route::post('importacoes/{id}/efetivar-importacao', [ImportacaoController::class, 'efetivarImportacao']);
 
 Route::get('cep/{cep}', [ApiCepService::class, 'search']);
 Route::get('validar/cns/{value}', [CNSValidator::class, 'validateCns']);

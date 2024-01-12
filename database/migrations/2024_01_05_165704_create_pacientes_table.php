@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('nome');
             $table->date('data_nascimento');
-            $table->string('cpf', 11);
-            $table->string('cns', 15);
+            $table->string('cpf', 11)->unique('paciente_cpf_unique');
+            $table->string('cns', 15)->unique('paciente_cns_unique');
             $table->string('mae');
             $table->timestamps();
         });

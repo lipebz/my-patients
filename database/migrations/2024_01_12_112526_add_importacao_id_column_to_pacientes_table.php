@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('pacientes', function (Blueprint $table) {
-            $table->unique(['cpf','cns']);
+            $table->foreignId('importacao_id')->nullable()->constrained(
+                table: 'importacoes', indexName: 'pacientes_importacao_id'
+            );
         });
     }
 
@@ -22,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('pacientes', function (Blueprint $table) {
-            $table->dropUnique(['cpf', 'cns']);
+            $table->dropColumn('importacao_id');
         });
     }
 };
