@@ -16,15 +16,12 @@
             </div>
             <!-- Modal body -->
             <div class="p-4 md:p-5 space-y-4">
-                <div class="w-100">
-                    <small>Arquivo</small>
-                    <input type="text" id="disabled-input" aria-label="disabled input" class=" bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="modelo-pacientes-2024-01-05.csv" disabled>
-                </div>
-                <p class="my-3 text-gray-500"><strong class="text-black">1</strong> registro encontrado.</p>
+                
+                <p class="my-3 text-gray-500 count-validacao"></p>
 
 
                 <div class="relative overflow-x-auto border sm:rounded-lg">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <table id="table-info-importacao" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="p-4 py-3 text-center sticky left-0 bg-white">
@@ -68,50 +65,7 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr class="whitespace-nowrap bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                
-                                <td class="px-6 py-4 text-center sticky left-0 bg-white">
-                                    <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Remover</a>
-                                </td>
-                                <th scope="row" class="px-6 py-4 text-center sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    Filipe Vitorio Soares Bezerra
-                                </th>
-                                <td class="px-6 py-4">
-                                    12/02/2001
-                                </td>
-                                <td class="px-6 py-4">
-                                    393.521.388.30
-                                </td>
-                                <td class="px-6 py-4">
-                                    808151515-5545
-                                </td>
-                                <td class="px-6 py-4">
-                                    Marcia Regina Soares de Souza Bezerra
-                                </td>
-                                <td class="px-6 py-4">
-                                    08577-200
-                                </td>
-                                <td class="px-6 py-4">
-                                    Rua Mirassol
-                                </td>
-                                <td class="px-6 py-4">
-                                    165
-                                </td>
-                                <td class="px-6 py-4">
-                                -  
-                                </td>
-                                <td class="px-6 py-4">
-                                    Vila Gepina
-                                </td>
-                                <td class="px-6 py-4">
-                                    Itaquaquecetuba
-                                </td>
-                                <td class="px-6 py-4">
-                                    SP
-                                </td>
-                            </tr>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                     
                 </div>

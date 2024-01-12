@@ -7,6 +7,7 @@ use App\Models\Importacao;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use stdClass;
 
 class ImportacaoController extends Controller
 {
@@ -89,13 +90,72 @@ class ImportacaoController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{   
+
+            $data = Importacao::find($id);
+
+            // Tratamentos
+
+            $data['data'] = json_decode($data['data']);
+
+
+            $info = [];
+            
+            foreach ($data['data'] as $value) {
+
+                $value->data_nascimento_formatada = date('d/m/Y', strtotime($value->data_nascimento));
+
+                $value->cpf_formatado = $this->mask($value->cpf, '###.###.###-##');
+                $value->cns_formatado = $this->mask($value->cns, '### #### #### ####');
+                $value->cep_formatado = $this->mask($value->cep, '#####-###');
+
+
+                $info[] = $value;
+
+            }
+
+            $data['data'] = $info;
+
+
+            return response()->json([
+                "success"=> true,
+                "data" => $data
+            ]);
+
+        } catch (\Throwable $th) {
+
+            return response()->json([
+                "success"=> false,
+                "message"=> "Erro: ". $th->getMessage()
+            ]);
+            
+        }
+    }
+
+    private function mask($val, $mask): string {
+        $maskared = '';
+        $k = 0;
+        for($i = 0; $i<=strlen($mask)-1; $i++) {
+            if($mask[$i] == '#') {
+                if(isset($val[$k])) $maskared .= $val[$k++];
+            } else {
+                if(isset($mask[$i])) $maskared .= $mask[$i];
+            }
+        }
+        return $maskared;
     }
 
     public function importarCsv($importacao)
     {
 
         $data = $this->csvToArray($importacao->path, ';'); 
+
+        foreach ($data as $key => $value) {
+
+            $value['data_nascimento'] = Carbon::createFromFormat('d/m/Y', $data['data_nascimento'])->format('Y-m-d');
+
+            $data[$key] = $value;
+        }
 
         $importacao->update([
             'quantidade' => count($data),
