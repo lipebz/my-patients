@@ -233,6 +233,32 @@ class PacienteController extends Controller
      */
     public function destroy(Paciente $paciente)
     {
-        //
+
+        try {
+            
+            $paciente->endereco()->delete();
+
+            $paciente->delete();
+
+            return response()->json([
+                "success"=> true,
+                "message"=> "Deletado com sucesso!"
+            ]);
+
+
+        } catch (\Throwable $th) {
+
+            $errorSQL = $th->getMessage();
+
+            if (!empty($th->errorInfo) && $th->errorInfo[0] == 23505)
+                $errorSQL = 'Já existe um cadastro com esse CPF/CNS';
+
+
+            return response()->json([
+                "success"=> false,
+                "message"=> $errorSQL
+            ]);
+        }
+
     }
 }

@@ -81,15 +81,6 @@ const editar = async e => {
 
     e.preventDefault()
 
-    // if ($('#input-foto').val() == '')
-    //     return Swal.fire({
-    //         icon: 'warning',
-    //         title: 'Faça o envio da foto para prosseguir.',
-    //         timer: 1500,
-    //         showConfirmButton: false,
-    //         timerProgressBar: true,
-    //     })
-
     const form = $('#form-edicao')[0]
 
     const data = new FormData(form)
@@ -232,3 +223,58 @@ $('#cns').blur(async function () {
     
 
 })
+
+
+const excluir = async e => {
+
+    e.preventDefault()
+
+    const confirm = await Swal.fire({
+        icon: 'warning',
+        title: "Tem certeza que deseja excluir esse cadastro?",
+        showCancelButton: true,
+        confirmButtonText: "Sim",
+        cancelButtonText: "Cancelar",
+    })
+
+    if (!confirm.isConfirmed)
+        return $(this).val('')
+
+    const form = $('#form-exclusao')[0]
+
+    const data = new FormData(form)
+    
+    const id = $('#id').val()
+
+    const url = `/api/pacientes/${id}`
+
+    const request = await $.ajax({
+        url,
+        data,
+        type : 'POST',
+        processData: false,
+        contentType: false,
+    });
+
+    if (!request?.success) {
+        return Swal.fire({
+            icon: 'error',
+            title: 'Ops!',
+            text: request.message,
+        })
+    }
+
+    await Swal.fire({
+        icon: 'success',
+        title: 'Excluído com sucesso!',
+        timer: 1500,
+        showConfirmButton: false,
+        timerProgressBar: true,
+    })
+
+    window.location.href = '/pacientes'
+
+
+}
+
+$('#btn-exclusao').click(excluir)
