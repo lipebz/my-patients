@@ -55,8 +55,10 @@ class ImportacaoController extends Controller
 
         try {
 
-            $path = Storage::put(
-                'public/imports', $request->file('input-csv')
+            $filename = uniqid() .'.'. $request->file('input-csv')->getClientOriginalExtension();
+
+            $path = Storage::putFileAs(
+                'public/imports', $request->file('input-csv'), $filename
             );
             
             $importacao = Importacao::create([
