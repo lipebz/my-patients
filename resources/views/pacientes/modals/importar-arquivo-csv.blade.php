@@ -18,7 +18,7 @@
             <div class="p-4 md:p-5 space-y-4">
                 
                 <p class="">1º Modelo CSV</p>
-                <a href="/storage/modelo.csv" download="modelo.csv" class="text-gray-900 bg-gray-100 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 me-2">
+                <a href="/common/modelo.csv" download="modelo.csv" class="text-gray-900 bg-gray-100 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 me-2">
                     <i class="fa-solid fa-download pe-3"></i> Baixar arquivo
                 </a>
 

@@ -66,7 +66,7 @@ class PacienteController extends Controller
     {
 
         if (empty($foto_url))
-            $foto_url = '/storage/sem-foto.png';
+            $foto_url = '/common/sem-foto.png';
 
         else if (str_starts_with($foto_url, 'public'))
             $foto_url = str_replace('public', '/storage', $foto_url);
